@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Live Bidding Dashboard</title>
+		<style>
+			body {
+				font-family: "Courier New", Courier, monospace;
+				background-color: #121212;
+				color: #00ff00;
+				padding: 40px;
+				max-width: 600px;
+				margin: 0 auto;
+			}
+			h1 {
+				border-bottom: 2px solid #00ff00;
+				padding-bottom: 10px;
+			}
+			.status {
+				padding: 10px;
+				margin-bottom: 20px;
+				font-weight: bold;
+			}
+			.bid-card {
+				background: #1e1e1e;
+				border: 1px solid #00ff00;
+				padding: 15px;
+				margin-bottom: 15px;
+				border-left: 5px solid #00ff00;
+			}
+			.price {
+				font-size: 24px;
+				color: #ffd700;
+				margin: 10px 0;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>📡 Live Market Feed</h1>
+		<div id="status" class="status">🟡 CONNECTING...</div>
+		<div id="feed">
+			<p>Waiting for market activity...</p>
+		</div>
+
+		<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+		<script>
+			// 1. Connect to your local Node.js server
+			const socket = io("http://localhost:3000");
+			const statusDiv = document.getElementById("status");
+			const feedDiv = document.getElementById("feed");
+
+			// 2. Listen for successful connection
+			socket.on("connect", () => {
+				statusDiv.innerHTML = `🟢 CONNECTED TO SERVER (ID: ${socket.id})`;
+			});
+
+			// 3. 🟢 THE FINTECH MAGIC: Listen for the backend broadcast
+			socket.on("market_update", (data) => {
+				// Remove the "waiting" text if it's still there
+				if (feedDiv.innerHTML.includes("Waiting")) feedDiv.innerHTML = "";
+
+				// Create a new visual card for the incoming bid
+				const card = document.createElement("div");
+				card.className = "bid-card";
+				card.innerHTML = `
+                <div><strong>${data.message}</strong></div>
+                <div class="price">$${data.new_bid}</div>
+                <div>Auction ID: ${data.auction_id} | Restaurant ID: ${data.winner_id}</div>
+                <div style="font-size: 12px; margin-top: 10px; color: #888;">
+                    Timestamp: ${new Date().toLocaleTimeString()}
+                </div>
+            `;
+
+				// Push the newest bid to the very top of the feed
+				feedDiv.prepend(card);
+			});
+
+			// 4. Handle server disconnects
+			socket.on("disconnect", () => {
+				statusDiv.innerHTML = "🔴 DISCONNECTED FROM SERVER";
+				statusDiv.style.color = "red";
+			});
+		</script>
+	</body>
+</html>
