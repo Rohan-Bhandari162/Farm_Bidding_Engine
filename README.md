@@ -1,24 +1,24 @@
-# 🌾 Farm Bidding Engine
+# Farm Bidding Engine
 
 A high-performance, real-time wholesale produce auction platform connecting **Farmers** directly with **Restaurants**. Built to eliminate middlemen, provide fair prices to agricultural producers, and give culinary businesses direct access to fresh, farm-grade harvest.
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
-### 🚜 Farmer Portal (Green Agriculture Theme)
+### Farmer Portal (Green Agriculture Theme)
 - **Produce Auction Deployment**: List harvest items with produce name, batch quantity (e.g., `100 kg`, `50 crates`), starting base price, and custom closing date/time.
 - **Smart Duration Presets**: Quick duration selectors (`+2 Hours`, `+12 Hours`, `+24 Hours / Tomorrow`, `+3 Days`) with automatic local time conversion.
 - **Produce Management**: Track personal produce listings, starting bids, and live incoming buyer offers.
 - **Real-Time Bidding Alerts**: Instant WebSocket notification when restaurants place competitive bids on your produce.
 
-### 🍽️ Restaurant Buyer Portal (Amber Gastronomy Theme)
+### Restaurant Buyer Portal (Amber Gastronomy Theme)
 - **Live Wholesale Marketplace**: Browse active produce auctions across regional farms with transparent farmer identities.
 - **One-Click Quick Bidding**: Fast bid chips (`Min Required`, `+₹50`, `+₹100`, `+₹500`) to outbid competitors instantly.
 - **Live Time Remaining & Expiry**: Dynamic countdown timers (`LIVE • 4h left`) and precise closing timestamps.
 - **Instant Outbid Alerts**: Real-time push notifications whenever a competing restaurant places a higher bid.
 
-### 🔒 Enterprise Architecture & Concurrency Control
+### Enterprise Architecture & Concurrency Control
 - **Anti-Race Condition Bidding Engine**: Uses PostgreSQL **Row-Level Locking** (`SELECT ... FOR UPDATE`) inside ACID transactions (`BEGIN` / `COMMIT` / `ROLLBACK`) to guarantee that concurrent simultaneous bids are serialized without data conflicts or stale overwrites.
 - **Strict Role-Based Access Control (RBAC)**: Only verified `FARMER` accounts can create produce listings; only verified `RESTAURANT` accounts can place bids. Farmers are strictly prevented from bidding on their own produce.
 - **Timezone Drift Protection**: Migrated to PostgreSQL `TIMESTAMPTZ` with ISO 8601 UTC normalization to ensure zero timezone drift between server, database, and client browsers.
@@ -26,7 +26,7 @@ A high-performance, real-time wholesale produce auction platform connecting **Fa
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
 - **Runtime & Language**: Node.js & TypeScript
@@ -45,7 +45,7 @@ A high-performance, real-time wholesale produce auction platform connecting **Fa
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 farm-bidding-engine/
@@ -69,7 +69,7 @@ farm-bidding-engine/
 
 ---
 
-## ⚙️ Database Schema
+## Database Schema
 
 ### 1. `users`
 | Column | Type | Description |
@@ -105,7 +105,7 @@ farm-bidding-engine/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Prerequisites
 - **Node.js** (v18 or higher)
@@ -148,7 +148,7 @@ npm --prefix frontend run dev
 
 ---
 
-## 📡 API Reference
+## API Reference
 
 ### Authentication
 - `POST /api/users` — Register a new account (`name`, `role: "FARMER" | "RESTAURANT"`, `password >= 6 chars`).
@@ -168,14 +168,14 @@ npm --prefix frontend run dev
 
 ---
 
-## 🧪 Testing with Demo Accounts
+## Testing with Demo Accounts
 The frontend login screen includes one-click demo credentials:
-- **🌾 Farmer Account**: `Rohan bhandari` / `supersecretpassword`
-- **🍽️ Restaurant Account**: `The Secure Spoon` / `supersecretpassword`
+- **Farmer Account**: `Rohan bhandari` / `supersecretpassword`
+- **Restaurant Account**: `The Secure Spoon` / `supersecretpassword`
 
 You can also use the **Create Account (Sign Up)** tab to instantly register your own custom Farmer or Restaurant profiles!
 
 ---
 
-## 🛡️ License
+## License
 ISC License.
